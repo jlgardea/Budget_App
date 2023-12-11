@@ -1,0 +1,25 @@
+{% extends 'budgets/base.html' %}
+{% load humanize %}
+
+{% block title %}
+BudgetApp - All Transactions
+{% endblock %}
+
+{% block content %}
+
+<p>Add a new transaction:</p> 
+<div>
+    {% include "budgets/new_transaction.html" with accounts=accounts type_list=type_list categories=categories %}
+</div>
+
+<hr/>
+
+<div>
+    {% include "budgets/list_transactions.html" with page_obj=page_obj transaction=transaction %}
+</div>
+
+<div>
+    {% include "budgets/pagination.html" with page_obj=page_obj %}
+</div>
+
+{% endblock %}

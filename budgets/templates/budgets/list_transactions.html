@@ -1,0 +1,46 @@
+{% load humanize %}
+<table class="table table-hover table-sm">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Trans Date</th>
+        <th scope="col">Account</th>
+        <th scope="col" class='text-center'>Transaction</th>
+        <th scope="col">Description</th>
+        <th scope="col" class="text-center">Amount</th>
+        <th scope="col"class="text-center">Category</th>
+        <th scope="col" class="text-justify">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for transaction in page_obj %}
+            <tr>
+                <td>{{ transaction.transaction_date }}</td>
+                <td><a href={% url 'budgets:account' id=transaction.account.id %}>{{ transaction.account.nickname }}</a></td>
+                <td class='text-center'>{{ transaction.type }}</td>
+                <td>{{ transaction.text }}</td>
+                
+                {% if transaction.type == 'EX' %}
+                    <td class='text-right'>
+                    $-{{ transaction.amount|intcomma }}
+                    </td>
+                {% else %}
+                    <td class='text-right' style="color: #00C200;">
+                    ${{ transaction.amount|intcomma }}
+                    </td>
+                {% endif %}
+
+                <td class="text-center">{{ transaction.category|default:"" }}</td>
+                <td class="text-justify">
+                    <form method="POST">
+                        {% csrf_token %} 
+                        <button type="submit" class="btn btn-outline-danger btn-sm" name="DelTrans" value="{{transaction.id}}">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan='7'>Add your first transaction above.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

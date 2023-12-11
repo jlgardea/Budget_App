@@ -1,0 +1,115 @@
+{% extends 'budgets/base.html' %}
+{% load humanize %}
+
+{% block title %}
+BudgetApp
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <h1>Welcome, {{ user }}</h1>
+</div>
+
+<div class='container-flud'>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Current Accounts</h4>
+
+      <hr/>
+      <table class="table table-hover table-sm">
+
+        {% if not bank_accts and not credit_accts %}
+          <p>Add your first account below to get started.</p>
+        {% else %}
+          {% if bank_accts %}
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col" class="col-md-3">Bank Account</th>
+                <th scope="col" class="col-md-3 text-right">Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% include "budgets/list_account.html" with accounts=bank_accts %}
+          {% endif %}
+
+          {% if credit_accts %}
+              <thead class="thead-dark">
+              <tr>
+                <th scope="col">Credit Card</th>
+                <th scope="col" class="text-right">Balance</th>
+              </tr>
+              </thead>
+              {% include "budgets/list_account.html" with accounts=credit_accts %}
+            </tbody>
+          {% endif %}
+        {% endif %}
+      </table>
+
+
+      <p>Add a new account:</p> 
+      <form method="POST" action={% url 'budgets:home' %}>
+          {% csrf_token %} 
+          <div class="form-row">
+            <div class="col-md-5">
+              <input type="text" class="form-control" placeholder="Account Nickname" id="nickname" name="nickname" maxlength="25" required="required">
+            </div>
+
+            <div class="col-md-5">
+              <div class="input-group is-invalid">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="validatedInputGroupSelect_type" >Options</label>
+                </div>
+                <select class="custom-select" id="validatedInputGroupSelect_type" name="type" id="type" required>
+                  <option value="">Choose...</option>
+                    {% for key, type in types %}
+                        <option value={{ key }}>{{ type }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+
+            </div>
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-outline-primary" name="NewAcct">Save</button>
+            </div>
+          </div>
+      </form>
+    </div>
+
+    <div class="col-md-6">
+      <div>
+        <h4>Budget Snapshot: {% now "F Y" %} </h4>
+        <hr/>
+        <table class="table table-sm table-borderless">
+
+          <tbody>
+              {% for key, details in sum_of_user_budgets.items %}
+                <tr>
+                    <td style="vertical-align:top;" class="col-md-2"><a href={% url 'budgets:budgets' id=user.id %}>{{ key.category }}<a></td>
+                    <td class="col-md-10">
+                        <div class="progress">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: {{ details.progress }}%;" aria-valuenow="{{ details.mtd }}" aria-valuemin="0" aria-valuemax="{{ key.amount }}">
+                              {{ details.progress}}%
+                            </div>
+                        </div>
+                        <small id="progressInfo" class="form-text text-muted">
+                          ${{ details.mtd|intcomma }} of ${{ key.amount|intcomma }}
+                        </small>
+                    </td>
+                </tr>
+                    {% empty %}
+                <tr>
+                    <td colspan="2">Set up your first budget category <a href={% url 'budgets:budgets' id=user.id %}>here.</a></td>
+                </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+        
+      </div>
+    </div
+
+  </div>
+
+</div>
+{% endblock %}

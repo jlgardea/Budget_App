@@ -1,0 +1,51 @@
+{% extends 'budgets/base.html' %}
+{% load humanize %}
+
+{% block title %}
+BudgetApp - Budget
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <p>Add a new budget</p>
+    <div class="row">
+        <div class="col-lg">
+            <form method="POST" action={% url 'budgets:budgets' id=user.id %}>
+                {% csrf_token %}
+                <div class="form-row">
+                <div class="col-md-6">
+                    <div class="input-group is-invalid">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="validatedInputGroupSelect_category">Category</label>
+                    </div>
+                    <select class="custom-select" id="validatedInputGroupSelect_category" name="category" id="category">
+                        <option value="">Choose...</option>
+                        {% for category in categories_without_budget %}
+                            <option value='{{ category }}'>{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                </div>
+                    <div class="col">
+                        <input type="number" class="form-control" placeholder="Amount" id="amount" name="amount" step="0.01" min="-999999999.99" max="999999999.99" required="required">
+                    </div>
+                    <div class="col"> 
+                        <button type="submit" class="btn btn-outline-primary" name="AddBudget">Save</button>
+                    </div>
+                </div>
+            </form>
+
+            <hr/>
+            <p>Budget: {% now "F Y" %} </p>
+            {% include "budgets/list_budget.html" with sum_of_user_budgets=sum_of_user_budgets %}
+        </div>
+
+
+        <div class="col-md">
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% load humanize %}
+<div>
+    <table class="table table-sm table-borderless">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col" class="col-md-3">Category</th>
+            <th scope="col" class="col-md-2 text-right">Budget</th>
+            <th scope="col" class="col-md-2 text-right">MTD</th>
+            <th scope="col" class="col-md-2 text-right">Balance</th>
+            <th scope="col" class="col-md-3 text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, details in sum_of_user_budgets.items %}
+                <tr>
+                    <td style="vertical-align:middle;">{{ key.category }}</td>
+                    <td class="text-right" style="vertical-align:middle;">${{ key.amount|intcomma }}</td>
+                    <td class="text-right" style="vertical-align:middle;">${{ details.mtd|intcomma }}</td>
+                    <td class="text-right" style="vertical-align:middle;">${{ details.balance|intcomma }}</td>
+                    <td class="text-right">
+                        <form method="POST" action={% url 'budgets:budgets' id=user.id %}>
+                            {% csrf_token %} 
+                            <button type="submit" class="btn btn-outline-danger btn-sm" name="DeleteBudget" value={{ key.id }}>Delete</button>
+                            </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ details.progress }}%;" aria-valuenow="{{ details.mtd }}" aria-valuemin="0" aria-valuemax="{{ key.amount }}"></div>
+                        </div>
+                        <hr/>
+                    </td>
+                </tr>
+                    {% empty %}
+                <tr>
+                    <td colspan="5">Add your first budget above.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

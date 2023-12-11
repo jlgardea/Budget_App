@@ -1,0 +1,41 @@
+{% extends 'budgets/base.html' %}
+{% load humanize %}
+
+{% block title %}
+BudgetApp - {{ account.nickname }} Account
+{% endblock %}
+
+{% block content %}
+
+<h1>
+    <span>{{ account.nickname }}</span>
+    <form method="POST">
+        {% csrf_token %} 
+        <button type="submit" class="btn btn-outline-danger float-right" name="DelAcct" value="{{ account.id }}">Delete Account</button>
+    </form>
+</h1>
+
+<div>
+    <h3 style="color: {% if account.balance < 0 %} red {% else %} #00C200 {% endif %};">
+    Current Balance: ${{ account.balance|intcomma }}
+    </h3>
+</div>
+
+<hr/>
+
+<p>Add a new transaction:</p> 
+<div>
+    {% include "budgets/new_transaction.html" with accounts=accounts type_list=type_list categories=categories default_account_id=account.id %}
+</div>
+
+<hr/>
+
+<div>
+    {% include "budgets/list_transactions.html" with page_obj=page_obj transaction=transaction page="/account/{{account.id}}/" %}
+</div>
+
+<div>
+    {% include "budgets/pagination.html" with page_obj=page_obj %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+<form method="POST">
+    {% csrf_token %} 
+    <div class="form-row">
+        <div class="col">
+            <input type="date" class="form-control" placeholder="Date" id="transaction_date" name="transaction_date" required="required">
+        </div>
+        <div class="col-2">
+            <div class="input-group is-invalid">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="validatedInputGroupSelect_account" >Account</label>
+            </div>
+            <select class="custom-select" id="validatedInputGroupSelect_account" name="account" id="account" value="account">
+                <option value="">Choose...</option>
+                {% for account in accounts %}
+                  {% if account.id == default_account_id %}
+                    <option value="{{ account.id }}" selected>{{ account.nickname }}</option>
+                  {% else %}
+                    <option value={{ account.id }}>{{ account.nickname }}</option>
+                  {% endif %}
+                {% endfor %}
+            </select>
+            </div>
+      </div>
+        <div class="col">
+            <div class="input-group is-invalid">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="validatedInputGroupSelect_type">Type</label>
+              </div>
+              <select class="custom-select" id="validatedInputGroupSelect_type" name="type" id="type" required>
+                <option value="">Choose...</option>
+                {% for key, type in type_list %}
+                    <option value={{ key }}>{{ type }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>   
+                  
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Description" id="text" name="text" maxlength="50" required="required">
+        </div>
+        <div class="col">
+            <input type="number" class="form-control" placeholder="Amount" id="amount" name="amount" step="0.01" min="-999999999.99" max="999999999.99" required="required">
+        </div>
+
+        <div class="col-2">
+            <div class="input-group is-invalid">
+              <div class="input-group-prepend">
+                  <label class="input-group-text" for="validatedInputGroupSelect_category">Category</label>
+              </div>
+
+              <select class="custom-select" id="validatedInputGroupSelect_category" name="category" id="category">
+                  <option value="">Choose...</option>
+                    {% for key, category in categories %}
+                        <option value='{{ key }}'>{{ category }}</option>
+                    {% endfor %}
+              </select>
+            </div>
+            <small id="category_option" class="form-text text-muted">Optional</small>
+      </div>
+      <div class="col">
+        <button type="submit" class="btn btn-outline-primary" name="NewTrans">Save</button>
+      </div>
+    </div>
+</form>

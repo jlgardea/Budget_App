@@ -1,0 +1,16 @@
+{% load humanize%}
+
+{% for account in accounts %}
+  <tr class='clickable' onclick="window.location='{% url 'budgets:account' id=account.id %}'">
+      <td>{{ account.nickname }}</td>
+      {% if account.balance < 0 %}
+        <td class='text-right' style="color: red;">
+          ${{ account.balance|intcomma }}
+        </td>
+      {% else %}
+        <td class='text-right' style="color: #00C200;">
+          ${{ account.balance|intcomma }}
+        </td>
+      {% endif %}
+  </tr>
+{% endfor %}
