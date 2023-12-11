@@ -2,14 +2,12 @@
 A web app for tracking expenses and budgets. 
 
 ## Languages & Framework
-___
 - Python
 - HTML/CSS
 - Django
 - Bootstrap
 
 ## Screenshots
-___
 ### New Account Home Page
 ![alt text](screenshots/home_startup.png "Home Page")
 
@@ -26,7 +24,6 @@ ___
 ![alt text](screenshots/budget.png "Budget Page")
 
 ## Continuing Work
-___
 - Edit feature
     - Accounts
     - Transactions
