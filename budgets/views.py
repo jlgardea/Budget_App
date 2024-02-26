@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import Http404
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.db.models import Sum, FloatField
-from datetime import date
+from django.core.paginator import  Paginator
 from . models import Account, Budget, Transaction
 from . forms import AccountForm, BudgetForm, TransactionForm
 from . helper import *
@@ -70,13 +68,13 @@ def account(request, id):
                 new_transaction = form.save(commit=False)
                 update_balance(new_transaction)
                 new_transaction.save()
-            return HttpResponseRedirect('/account/'+ str(id))
+            return redirect('/account/'+ str(id))
 
         #Delete selected transaction with DelTrans submission and return to account page
         elif 'DelTrans' in request.POST:
             transaction_pk = request.POST.get('DelTrans')
             delete_transaction(transaction_pk)
-            return HttpResponseRedirect('/account/'+ str(id))
+            return redirect('/account/'+ str(id))
 
 
     #Get information for navbar and form submission

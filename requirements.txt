@@ -1,0 +1,15 @@
+asgiref==3.7.2
+beautifulsoup4==4.12.2
+certifi==2024.2.2
+charset-normalizer==3.3.2
+crispy-bootstrap4==2023.1
+Django==4.2.7
+django-bootstrap4==23.2
+django-crispy-forms==2.1
+django-ebhealthcheck==2.0.2
+idna==3.6
+python-decouple==3.8
+requests==2.31.0
+soupsieve==2.5
+sqlparse==0.4.4
+urllib3==2.2.1
